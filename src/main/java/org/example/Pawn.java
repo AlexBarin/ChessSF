@@ -10,30 +10,21 @@ public class Pawn extends ChessPiece {
         if (!isValidMove(line, column, toLine, toColumn)) {
             return false;
         }
-        if (column != toColumn) {
-            return false;
+        ChessPiece targetPiece = chessBoard.board[toLine][toColumn];
+        int direction = this.getColor().equals("White") ? 1 : -1;
+
+        if (column == toColumn) {
+            // Проверка на движение вперед
+            if ((toLine - line == direction && targetPiece == null) || // Один шаг вперед
+                    (line == (this.getColor().equals("White") ? 1 : 6) && toLine - line == 2 * direction && // Первый ход на два шага
+                            chessBoard.board[line + direction][column] == null && targetPiece == null)) {
+                return true;
+            }
+        } else if (Math.abs(column - toColumn) == 1 && toLine - line == direction && targetPiece != null) {
+            // Проверка на поедание по диагонали
+            return !targetPiece.getColor().equals(this.getColor());
         }
 
-        int direction = "White".equals(getColor()) ? 1 : -1;
-        int startLine = "White".equals(getColor()) ? 1 : 6;
-
-        if ("White".equals(getColor())) {
-            if (toLine == line + direction) {
-                return true;
-            }
-            if (line == startLine && toLine == line + 2 * direction) {
-                return true;
-            }
-        }
-
-        if ("Black".equals(getColor())) {
-            if (toLine == line + direction) {
-                return true;
-            }
-            if (line == startLine && toLine == line + 2 * direction) {
-                return true;
-            }
-        }
         return false;
     }
 

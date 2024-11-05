@@ -8,6 +8,10 @@ public abstract class ChessPiece {
         this.check = true;
     }
 
+    public boolean isCheck() {
+        return check;
+    }
+
     public String getColor(){
         return color;
     }

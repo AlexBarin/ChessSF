@@ -20,9 +20,38 @@ public class Queen extends ChessPiece {
             return false;
         }
 
-        boolean isStraightMove = (line == toLine || column == toColumn);
-        boolean isDiagonalMove = Math.abs(toLine - line) == Math.abs(toColumn - column);
+        if (line == toLine || column == toColumn) {
+            // Прямой ход
+            int rowStep = (toLine == line) ? 0 : (toLine > line ? 1 : -1);
+            int colStep = (toColumn == column) ? 0 : (toColumn > column ? 1 : -1);
+            int row = line + rowStep, col = column + colStep;
 
-        return isStraightMove || isDiagonalMove;
+            while (row != toLine || col != toColumn) {
+                if (chessBoard.board[row][col] != null) {
+                    return false;
+                }
+                row += rowStep;
+                col += colStep;
+            }
+
+        } else if (Math.abs(toLine - line) == Math.abs(toColumn - column)) {
+            // Диагональный ход
+            int rowStep = (toLine > line) ? 1 : -1;
+            int colStep = (toColumn > column) ? 1 : -1;
+            int row = line + rowStep, col = column + colStep;
+
+            while (row != toLine && col != toColumn) {
+                if (chessBoard.board[row][col] != null) {
+                    return false;
+                }
+                row += rowStep;
+                col += colStep;
+            }
+        } else {
+            return false;
+        }
+
+        return chessBoard.board[toLine][toColumn] == null
+                || !chessBoard.board[toLine][toColumn].getColor().equals(this.getColor());
     }
 }

@@ -11,10 +11,12 @@ public class Horse extends ChessPiece {
 
         if (!isValidMove(line, column, toLine, toColumn))
             return false;
-
-        int deltaLine = Math.abs(toLine - line);
-        int deltaColumn = Math.abs(toColumn - column);
-        return (deltaLine == 2 && deltaColumn == 1) || (deltaLine == 1 && deltaColumn == 2);
+        int rowDiff = Math.abs(line - toLine);
+        int colDiff = Math.abs(column - toColumn);
+        if (!((rowDiff == 2 && colDiff == 1) || (rowDiff == 1 && colDiff == 2))) {
+            return false;
+        }
+        return chessBoard.board[toLine][toColumn] == null || !chessBoard.board[toLine][toColumn].getColor().equals(this.getColor());
     }
 
     @Override

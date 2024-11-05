@@ -16,8 +16,23 @@ public class Bishop extends ChessPiece {
         if (!isValidMove(line, column, toLine, toColumn)) {
             return false;
         }
-        int deltaLine = Math.abs(toLine - line);
-        int deltaColumn = Math.abs(toColumn - column);
-        return deltaLine == deltaColumn;
+
+        if (Math.abs(toLine - line) != Math.abs(toColumn - column)) {
+            return false; // Слон ходит только по диагонали
+        }
+
+        int rowStep = (toLine > line) ? 1 : -1;
+        int colStep = (toColumn > column) ? 1 : -1;
+        int row = line + rowStep, col = column + colStep;
+
+        while (row != toLine && col != toColumn) {
+            if (chessBoard.board[row][col] != null) {
+                return false; // Путь заблокирован
+            }
+            row += rowStep;
+            col += colStep;
+        }
+
+        return chessBoard.board[toLine][toColumn] == null || !chessBoard.board[toLine][toColumn].getColor().equals(this.getColor());
     }
 }

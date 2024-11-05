@@ -20,9 +20,15 @@ public class King extends ChessPiece {
             return false;
         }
 
-        boolean isOneStepMove = Math.abs(toLine - line) <= 1 && Math.abs(toColumn - column) <= 1;
+        int rowDiff = Math.abs(line - toLine);
+        int colDiff = Math.abs(column - toColumn);
 
-        return isOneStepMove && !isUnderAttack(chessBoard, toLine, toColumn);
+        if (rowDiff > 1 || colDiff > 1) {
+            return false;
+        }
+
+        return chessBoard.board[toLine][toColumn] == null
+                || !chessBoard.board[toLine][toColumn].getColor().equals(this.getColor());
     }
 
     // Метод, проверяющий, находится ли указанная позиция под атакой
